@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@/context/theme-provider';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import type React from 'react';
@@ -18,13 +19,19 @@ export default function RootLayout ({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
-          <h1 className='h1-bold'>fish</h1>
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
+        <ClerkProvider appearance={{
+          elements: {
+            formButtonPrimary: 'primary-gradient',
+            footerActionLink: 'primary-text-gradient hover:text-primary-500'
+          }
+        }}>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

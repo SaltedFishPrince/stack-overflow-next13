@@ -5,6 +5,7 @@
     "plugin:react/jsx-runtime",
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
     "standard",
     "plugin:tailwindcss/recommended"
   ],
@@ -37,6 +38,10 @@
     "no-return-await": "error",
     "prefer-promise-reject-errors": "error",
     "react/jsx-uses-react": "error",
+    // 确保正确使用 Hook
+    "react-hooks/exhaustive-deps": "error",
+    "react-hooks/rules-of-hooks": "error",
+    // typescript
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-unused-vars": [
