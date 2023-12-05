@@ -1,3 +1,74 @@
 {
-  "extends": ["next/core-web-vitals","standard","plugin:tailwindcss/recommended"]
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "standard",
+    "plugin:tailwindcss/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "no-var": "error",
+    "quotes": [
+      "error",
+      "single"
+    ],
+    // 使用单引号
+    "semi": [
+      "error",
+      "always"
+    ], // 末尾添加分号
+    "prefer-const": "error",
+    "no-irregular-whitespace": "off", // 禁止不规则的空白
+    "space-infix-ops": [
+      "error",
+      {
+        "int32Hint": true
+      }
+    ], // 符号之间添加空格
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ], // 对象花括号两边添加空格
+    // async
+    "no-promise-executor-return": "error",
+    "no-return-await": "error",
+    "prefer-promise-reject-errors": "error",
+    "react/jsx-uses-react": "error",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/semi": [
+      "error",
+      "always"
+    ],
+    "@typescript-eslint/indent": [
+      "error",
+      2
+    ],
+    "@typescript-eslint/space-infix-ops": [
+      "error",
+      {
+        "int32Hint": true
+      }
+    ],
+    "@typescript-eslint/object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports"
+      }
+    ]
+  }
 }
