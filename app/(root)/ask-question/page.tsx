@@ -3,7 +3,7 @@ const AskQuestion = () => {
     <div>
       Ask-Question
     </div>
-  )
-}
+  );
+};
 
-export default AskQuestion
+export default AskQuestion;
