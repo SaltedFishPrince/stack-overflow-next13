@@ -45,7 +45,7 @@ const Theme = () => {
           {theme === 'dark' ? <MoonIcon/> : <SunIcon/>}
         </MenubarTrigger>
         <MenubarContent
-          className='absolute right-[0px] mt-3 min-w-[120px]
+          className='background-light900_dark300 absolute right-[0px] mt-3 min-w-[120px]
           rounded border py-2 dark:border-dark-400 dark:bg-dark-300'
         >
           {themes.map(({ label, value, icon }) => {

@@ -1,9 +1,7 @@
 'use client';
-
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import React from 'react';
-import type { LocalSearchBarProps } from './types';
 
 const Icon = ({ imgSrc }: { imgSrc:string }) => {
   return (
@@ -17,13 +15,21 @@ const Icon = ({ imgSrc }: { imgSrc:string }) => {
   );
 };
 
+interface props {
+  route: string;
+  iconPosition?: 'left' | 'right';
+  imgSrc: string;
+  placeholder?: string;
+  otherClasses?: string;
+}
+
 const LocalSearchBar = ({
   route,
   iconPosition = 'left',
   imgSrc,
   placeholder = '',
   otherClasses
-}: LocalSearchBarProps) => {
+}: props) => {
   const [value] = React.useState('');
   console.log(route);
   return (
