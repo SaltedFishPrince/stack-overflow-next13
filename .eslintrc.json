@@ -12,6 +12,7 @@
   "parser": "@typescript-eslint/parser",
   "rules": {
     "no-var": "error",
+    "no-redeclare": "off",
     "quotes": [
       "error",
       "single"
@@ -42,6 +43,7 @@
     "react-hooks/exhaustive-deps": "error",
     "react-hooks/rules-of-hooks": "error",
     // typescript
+    "@typescript-eslint/no-redeclare": "error",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-unused-vars": [

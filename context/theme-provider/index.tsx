@@ -1,7 +1,8 @@
 'use client';
-import type { ThemeMode } from '@/types';
-import React, { useEffect } from 'react';
-import type { ThemeContext, ThemeValue } from './types';
+import { useLocalStorage } from '@/hooks/uselocalStorage';
+import type { Theme, ThemeMode } from '@/types';
+import React from 'react';
+import type { ThemeContext } from './types';
 
 const themeContext = React.createContext< ThemeContext | null>(null);
 
@@ -14,59 +15,35 @@ const setLightTheme = () => {
   document.documentElement.classList.add('light');
 };
 
-const themeReducer = (state:ThemeValue, type:ThemeMode) => {
-  switch (type) {
-    case 'dark':{
-      setDarkTheme();
-      return {
-        ...state,
-        theme: type,
-        mode: type
-      };
-    }
-    case 'light':{
-      setLightTheme();
-      return {
-        ...state,
-        theme: type,
-        mode: type
-      };
-    }
-    case 'system':{
-      const themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
-      const isDark = themeMedia.matches;
-      const theme = isDark ? 'dark' as const : 'light' as const;
-      if (isDark) {
-        setDarkTheme();
-      } else {
-        setLightTheme();
-      }
-      return {
-        ...state,
-        theme,
-        mode: type
-      };
-    }
-    default: {
-      throw new Error('unknown theme mode');
-    }
-  }
+const getSystemTheme = () => {
+  const themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+  const isDark = themeMedia.matches;
+  return isDark ? 'dark' : 'light';
 };
-
 export const ThemeProvider = ({ children }:{ children:React.ReactNode }) => {
-  const [themeValue, dispatch] = React.useReducer(themeReducer, { mode: 'system', theme: 'dark' });
+  const [mode, setMode] = useLocalStorage<ThemeMode>('theme', 'system');
+  const [theme, setTheme] = React.useState<Theme>('dark');
 
-  const setThemeMode = (mode:ThemeMode) => {
-    window.localStorage.setItem('theme', mode);
-    dispatch(mode);
-  };
+  const setThemeMode = React.useCallback((value:ThemeMode) => setMode(value), [setMode]);
 
-  useEffect(() => {
-    const mode = window.localStorage.getItem('theme') as ThemeMode;
-    setThemeMode(mode ?? 'system');
-  }, []);
+  React.useEffect(() => {
+    if (mode === 'dark') {
+      setTheme('dark');
+      setDarkTheme();
+    }
+    if (mode === 'light') {
+      setTheme('light');
+      setLightTheme();
+    }
+    if (mode === 'system') {
+      const systemMode = getSystemTheme();
+      systemMode === 'dark' ? setDarkTheme() : setLightTheme();
+      setTheme(systemMode);
+    }
+  }, [mode]);
 
-  const value = React.useMemo(() => ({ themeValue, setThemeMode }), [themeValue]);
+  const value = React.useMemo(() => ({ themeValue: { theme, mode }, setThemeMode }), [mode, theme, setThemeMode]);
+
   return (
     <themeContext.Provider value={value}>
       {children}
