@@ -5,7 +5,7 @@ import { HomePageFilters } from '@/constants/filters';
 import { Button } from '../ui/button';
 
 const HomeFilters = () => {
-  const [active, setActive] = React.useState<null | string>(null);
+  const [active, setActive] = React.useState< string>(() => HomePageFilters[0].value);
   return (
     <div className="mt-10 hidden flex-wrap gap-3 md:flex">
       {HomePageFilters.map(({ name, value }) => (
