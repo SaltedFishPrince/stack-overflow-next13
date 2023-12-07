@@ -4,7 +4,7 @@ import Link from 'next/link';
 interface Props{
   _id:number | string
   name:string
-  totalQuestions:number
+  totalQuestions?:number
   showCount?:boolean
 }
 const RenderTag = ({ _id, name, totalQuestions, showCount = false }:Props) => {

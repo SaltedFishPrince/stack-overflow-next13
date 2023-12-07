@@ -17,8 +17,8 @@ const questions = [
     ],
     author: {
       _id: '1',
-      name: 'Sahil Shadwal',
-      picture: 'path/to/picture.jpg'
+      name: 'SaltedFish',
+      picture: '/assets/images/avatar.jpeg'
     },
     upvotes: 10,
     views: 1000000,
@@ -35,7 +35,7 @@ const questions = [
     author: {
       _id: '2',
       name: 'Sahil Shadwal',
-      picture: 'path/to/another-picture.jpg'
+      picture: '/assets/images/avatar.jpeg'
     },
     upvotes: 15,
     views: 120,
@@ -46,13 +46,23 @@ const questions = [
 
 const QuestionList = () => {
   return (
-    questions.map(({ _id }) => {
+    questions.map((question) => {
       return (
-        <QuestionCard key={_id}/>
+        <QuestionCard
+          key={question._id}
+          _id={question._id}
+          title={question.title}
+          tags={question.tags}
+          author={question.author}
+          upvotes={question.upvotes}
+          views={question.views}
+          answers={question.answers}
+          createdAt={question.createdAt}/>
       );
     })
   );
 };
+
 export default function Home () {
   return (
     <div>
@@ -77,6 +87,7 @@ export default function Home () {
           containerClasses="hidden max-md:flex"
         />
       </div>
+
       <HomeFilters/>
 
       <div className="mt-10 flex w-full flex-col gap-6">
