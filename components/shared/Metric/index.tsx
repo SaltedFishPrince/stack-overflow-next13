@@ -61,7 +61,8 @@ const Metric = ({
       isAuthor={isAuthor}
       textStyles={textStyles}
       href={href}
-    />);
+    />
+  );
   if (href) {
     return (
       <Link href={href} className="flex-center gap-1">
