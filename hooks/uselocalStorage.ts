@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 
 /**
@@ -10,8 +11,10 @@ export function useLocalStorage<T = any>(key: string): readonly [T | null, (valu
 export function useLocalStorage<T = any>(key: string, defaultValue: T):readonly [T, (value: T) => void];
 export function useLocalStorage<T = any> (key: string, defaultValue?: T):readonly [T | null, (value: T) => void] {
   const [state, setState] = React.useState<T | null>(() => {
-    const storedValue = localStorage.getItem(key);
-    return storedValue ? JSON.parse(storedValue)[key] : defaultValue || null;
+    if (typeof window !== 'undefined') {
+      const storedValue = window.localStorage.getItem(key);
+      return storedValue ? JSON.parse(storedValue)[key] : defaultValue || null;
+    }
   });
 
   const setValue = React.useCallback((value: T) => {
@@ -19,10 +22,11 @@ export function useLocalStorage<T = any> (key: string, defaultValue?: T):readonl
   }, []);
 
   React.useEffect(() => {
+    if (typeof window === 'undefined') return;
     if (state === null) {
-      localStorage.removeItem(key);
+      window.localStorage.removeItem(key);
     } else {
-      localStorage.setItem(key, JSON.stringify({ [key]: state }));
+      window.localStorage.setItem(key, JSON.stringify({ [key]: state }));
     }
   }, [key, state]);
   const value = React.useMemo(() => [state, setValue] as const, [setValue, state]);
