@@ -163,6 +163,10 @@
     @apply text-[12px] font-medium leading-[15.6px];
   }
 
+  .medium-big {
+    @apply text-[14px] font-medium leading-[15.6px];
+  }
+
   .small-semibold {
     @apply text-[12px] font-semibold leading-[15.6px];
   }
@@ -181,6 +185,10 @@
 
   .invert-colors {
     @apply invert dark:invert-0;
+  }
+
+  .invert-colors-reversal {
+    @apply invert-0 dark:invert;
   }
 
   .shadow-light100_dark100 {

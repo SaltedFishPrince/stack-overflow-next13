@@ -1,11 +1,11 @@
 import Filter from '@/components/shared/filter';
 import { HomePageFilters } from '@/constants/filters';
 
-import HomeFilters from '@/components/home/HomeFilter';
-import HomeQuestion from '@/components/home/Question';
 import LocalSearchBar from '@/components/shared/search/LocalSearchBar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import HomeFilters from './components/HomeFilter';
+import HomeQuestion from './components/Question';
 
 export default function Home () {
   return (

@@ -54,6 +54,14 @@ body {
   .tab {
     @apply min-h-full dark:bg-dark-400 bg-light-800 text-light-500 dark:data-[state=active]:bg-dark-300 data-[state=active]:bg-primary-100 data-[state=active]:text-primary-500 !important;
   }
+
+  .tip-button-active {
+    @apply bg-blue-200 dark:bg-blue-500
+  }
+
+  .tip-button-hover {
+    @apply hover:bg-blue-200 dark:hover:bg-blue-500
+  }
 }
 
 .no-focus {

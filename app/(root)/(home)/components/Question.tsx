@@ -1,5 +1,5 @@
-import QuestionCard from '../cards/QuestionCard';
-import NotResult from '../shared/not-result';
+import QuestionCard from '../../../../components/cards/QuestionCard';
+import NotResult from '../../../../components/shared/not-result';
 
 const questions = [
   {

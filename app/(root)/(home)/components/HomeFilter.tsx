@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { HomePageFilters } from '@/constants/filters';
-import { Button } from '../ui/button';
+import { Button } from '../../../../components/ui/button';
 
 const HomeFilters = () => {
   const [active, setActive] = React.useState< string>(() => HomePageFilters[0].value);
