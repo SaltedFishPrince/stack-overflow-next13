@@ -12,8 +12,9 @@ import { Input } from '@/components/ui/input';
 import type { QuestionsSchemaType } from '@/lib/validation';
 import { QuestionsSchema } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
-import type React from 'react';
+import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import type * as z from 'zod';
@@ -21,15 +22,26 @@ import Tiptap from '../../../../components/tiptap';
 import { Badge } from '../../../../components/ui/badge';
 import { Button } from '../../../../components/ui/button';
 const QuestionForm = () => {
+  const [isSubmit, setIsSubmit] = React.useState(false);
+
   const form = useForm<z.infer<QuestionsSchemaType>>({
     resolver: zodResolver(QuestionsSchema),
     defaultValues: {
       title: '',
+      explanation: '',
       tags: []
     }
   });
+
   const onSubmit = (values: z.infer<QuestionsSchemaType>) => {
-    console.log(values);
+    console.log('🚀 ~ file: QuestionForm.tsx:37 ~ onSubmit ~ values:', values);
+    try {
+      setIsSubmit(true);
+    } catch {
+
+    } finally {
+      setIsSubmit(false);
+    }
   };
 
   const handleInputKeyDown = (
@@ -167,8 +179,12 @@ const QuestionForm = () => {
         <Button
           type="submit"
           className="primary-gradient w-fit !text-light-900"
+          disabled={isSubmit}
         >
-          edit
+          {
+            isSubmit && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+          }
+          {isSubmit ? 'loading...' : 'edit'}
         </Button>
       </form>
     </Form>
