@@ -1,4 +1,4 @@
-import { getQuestions } from '@/lib/action/question.action';
+import { getQuestions } from '@/lib/actions/question.action';
 import QuestionCard from '../../../../components/cards/QuestionCard';
 import NotResult from '../../../../components/shared/not-result';
 

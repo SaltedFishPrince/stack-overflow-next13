@@ -21,7 +21,7 @@ import type * as z from 'zod';
 import Tiptap from '../../../../components/tiptap';
 import { Badge } from '../../../../components/ui/badge';
 import { Button } from '../../../../components/ui/button';
-import { createQuestion } from '@/lib/action/question.action';
+import { createQuestion } from '@/lib/actions/question.action';
 import { useRouter, usePathname } from 'next/navigation'
 interface QuestionFormProps {
   userId: string
