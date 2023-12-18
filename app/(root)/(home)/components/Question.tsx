@@ -1,7 +1,8 @@
+import { getQuestions } from '@/lib/action/question.action';
 import QuestionCard from '../../../../components/cards/QuestionCard';
 import NotResult from '../../../../components/shared/not-result';
 
-const questions = [
+const questions2 = [
   {
     _id: '1',
     title: 'Cascading Deletes in SQLAlchemy?',
@@ -38,31 +39,32 @@ const questions = [
   }
 ];
 
-const QuestionList = () => {
-  return (
-    questions.map((question) => {
-      return (
-        <QuestionCard
-          key={question._id}
-          _id={question._id}
-          title={question.title}
-          tags={question.tags}
-          author={question.author}
-          upvotes={question.upvotes}
-          views={question.views}
-          answers={question.answers}
-          createdAt={question.createdAt}/>
-      );
-    })
-  );
-};
 
-const HomeQuestion = () => {
+
+const HomeQuestion = async () => {
+  const result = await getQuestions({})
+  const { questions } = result || {}
+  console.log("🚀 ~ file: Question.tsx:47 ~ HomeQuestion ~ questions:", questions)
   return (
     <div className="mt-10 flex w-full flex-col gap-6">
       {
         questions.length > 0
-          ? <QuestionList/>
+          ? (
+            questions.map((question) => {
+              return (
+                <QuestionCard
+                  key={question._id}
+                  _id={question._id}
+                  title={question.title}
+                  tags={question.tags}
+                  author={question.author}
+                  upvotes={question.upvotes}
+                  views={question.views}
+                  answers={question.answers}
+                  createdAt={question.createdAt} />
+              );
+            })
+          )
           : <NotResult
             title="There&rsquo;s no question to show"
             description="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"

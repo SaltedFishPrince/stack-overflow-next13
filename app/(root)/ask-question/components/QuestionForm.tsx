@@ -21,9 +21,15 @@ import type * as z from 'zod';
 import Tiptap from '../../../../components/tiptap';
 import { Badge } from '../../../../components/ui/badge';
 import { Button } from '../../../../components/ui/button';
-const QuestionForm = () => {
+import { createQuestion } from '@/lib/action/question.action';
+import { useRouter, usePathname } from 'next/navigation'
+interface QuestionFormProps {
+  userId: string
+}
+const QuestionForm = ({ userId }: QuestionFormProps) => {
   const [isSubmit, setIsSubmit] = React.useState(false);
-
+  const router = useRouter();
+  const pathname = usePathname()
   const form = useForm<z.infer<QuestionsSchemaType>>({
     resolver: zodResolver(QuestionsSchema),
     defaultValues: {
@@ -33,10 +39,17 @@ const QuestionForm = () => {
     }
   });
 
-  const onSubmit = (values: z.infer<QuestionsSchemaType>) => {
-    console.log('🚀 ~ file: QuestionForm.tsx:37 ~ onSubmit ~ values:', values);
+  const onSubmit = async (values: z.infer<QuestionsSchemaType>) => {
+    setIsSubmit(true);
     try {
-      setIsSubmit(true);
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(userId),
+        path: pathname
+      })
+      router.push('/')
     } catch {
 
     } finally {
@@ -48,7 +61,9 @@ const QuestionForm = () => {
     e: React.KeyboardEvent<HTMLInputElement>,
     field: ControllerRenderProps<z.infer<QuestionsSchemaType>, 'tags'>
   ) => {
+
     if (e.key !== 'Enter' || field.name !== 'tags') return;
+    e.preventDefault()
     const tagInput = e.target as HTMLInputElement;
     const tagValue = tagInput.value.trim();
     if (tagValue === '') return;
@@ -69,11 +84,14 @@ const QuestionForm = () => {
       tagInput.value = '';
       form.clearErrors('tags');
     } else {
-      form.trigger();
+      return form.setError('tags', {
+        type: "repeat",
+        message: `The ${tagValue} tag has been added`
+      });
     }
   };
 
-  const handleTagRemove = (tag:string, field: ControllerRenderProps<z.infer<QuestionsSchemaType>, 'tags'>) => {
+  const handleTagRemove = (tag: string, field: ControllerRenderProps<z.infer<QuestionsSchemaType>, 'tags'>) => {
     const newTagValue = field.value.filter(t => t !== tag);
     form.setValue('tags', newTagValue);
   };
@@ -95,6 +113,12 @@ const QuestionForm = () => {
               <FormControl className="mt-3.5">
                 <Input
                   className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+
+                    }
+                  }}
                   {...field}
                 />
               </FormControl>
@@ -109,14 +133,17 @@ const QuestionForm = () => {
         <FormField
           control={form.control}
           name="explanation"
-          render={() => (
+          render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-3">
               <FormLabel className="paragraph-semibold text-dark400_light800">
                 Detailed explanation of your problem{' '}
                 <span className="text-primary-500">*</span>
               </FormLabel>
               <FormControl className="mt-3.5">
-                <Tiptap/>
+                <Tiptap onBlur={() => field.onBlur()}
+                  onUpdate={({ editor }) => {
+                    field.onChange(editor.getHTML())
+                  }} />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
                 Introduce the problem and expand on what you put in the title.
@@ -182,7 +209,7 @@ const QuestionForm = () => {
           disabled={isSubmit}
         >
           {
-            isSubmit && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+            isSubmit && <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           }
           {isSubmit ? 'loading...' : 'edit'}
         </Button>

@@ -1,18 +1,18 @@
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 
-interface Props{
-  _id:number | string
-  name:string
-  totalQuestions?:number
-  showCount?:boolean
+interface Props {
+  _id: number | string
+  name: string
+  totalQuestions?: number
+  showCount?: boolean
 }
-const RenderTag = ({ _id, name, totalQuestions, showCount = false }:Props) => {
+const RenderTag = ({ _id, name, totalQuestions, showCount = false }: Props) => {
   return (
     <Link href={`/tags/${_id}`} className="flex justify-between gap-2">
       <Badge
         className="subtle-medium background-light800_dark300 text-light400_light500
-        rounded-md border-none px-4 py-2 uppercase"
+        rounded-md border-none px-4 py-2 capitalize"
       >
         {name}
       </Badge>

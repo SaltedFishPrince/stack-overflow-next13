@@ -11,7 +11,7 @@ const Floation = () => {
   return (
     <FloatingMenu
     >
-      <div className='flex items-center gap-2'>
+      <div className='flex items-center gap-21'>
         <Button
           size='sm'
           variant='destructive'
@@ -19,7 +19,6 @@ const Floation = () => {
           ${editor.isActive('heading', { level: 1 }) ? 'tip-button-active' : ''}
           border-2 border-solid border-gray-400 hover:border-black  
           `}
-
           onClick={(e) => handleToggleHeading(e, 1)}
         >
           <Heading1 className='invert-colors-reversal'/>
