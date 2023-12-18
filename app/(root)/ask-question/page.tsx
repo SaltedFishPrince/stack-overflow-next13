@@ -3,7 +3,7 @@ import QuestionForm from './components/QuestionForm';
 import { getUserById } from '@/lib/actions/user.action';
 
 const AskQuestion = async () => {
-  const userId = "clerk123";
+  const userId = process.env.NEXT_PUBLIC_USER_ID;
   if (!userId) redirect("/sign-in");
 
   const mongoUser = await getUserById({ userId });

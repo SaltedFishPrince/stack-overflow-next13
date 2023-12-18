@@ -7,11 +7,11 @@ import {
   SelectValue
 } from '@/components/ui/select';
 interface FitterProps {
-  filters:ReadonlyArray<{ name:string, value:string }>
+  filters: ReadonlyArray<{ name: string, value: string }>
   otherClasses?: string;
   containerClasses?: string;
 }
-const Filter = ({ filters, otherClasses, containerClasses }:FitterProps) => {
+const Filter = ({ filters, otherClasses, containerClasses }: FitterProps) => {
   return (
     <div className={`relative ${containerClasses}`}>
       <Select>
