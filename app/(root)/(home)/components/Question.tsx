@@ -2,49 +2,9 @@ import { getQuestions } from '@/lib/actions/question.action';
 import QuestionCard from '../../../../components/cards/QuestionCard';
 import NotResult from '../../../../components/shared/not-result';
 
-const questions2 = [
-  {
-    _id: '1',
-    title: 'Cascading Deletes in SQLAlchemy?',
-    tags: [
-      { _id: '1', name: 'python' },
-      { _id: '2', name: 'sql' }
-    ],
-    author: {
-      _id: '1',
-      name: 'SaltedFish',
-      picture: '/assets/images/avatar.jpeg'
-    },
-    upvotes: 10,
-    views: 1000000,
-    answers: [{}, {}], // Placeholder objects for answers
-    createdAt: new Date('2023-05-01T12:00:00.000Z')
-  },
-  {
-    _id: '2',
-    title: 'How to center a div?',
-    tags: [
-      { _id: '3', name: 'css' },
-      { _id: '4', name: 'html' }
-    ],
-    author: {
-      _id: '2',
-      name: 'Sahil Shadwal',
-      picture: '/assets/images/avatar.jpeg'
-    },
-    upvotes: 15,
-    views: 120,
-    answers: [{}, {}], // Placeholder objects for answers
-    createdAt: new Date('2023-06-15T10:30:00.000Z')
-  }
-];
-
-
-
 const HomeQuestion = async () => {
   const result = await getQuestions({})
   const { questions } = result || {}
-  console.log("🚀 ~ file: Question.tsx:47 ~ HomeQuestion ~ questions:", questions)
   return (
     <div className="mt-10 flex w-full flex-col gap-6">
       {
