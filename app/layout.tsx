@@ -4,8 +4,8 @@ import type { Metadata } from 'next';
 import type React from 'react';
 import { inter, spaceGrotesk } from './font';
 import './globals.css';
-
-export const metadata:Metadata = {
+import '../styles/prism.css'
+export const metadata: Metadata = {
   title: 'FishFlow',
   description: 'A fish flow for your fish',
   icons: {
@@ -13,13 +13,13 @@ export const metadata:Metadata = {
   }
 };
 
-export default function RootLayout ({
+export default function RootLayout({
   children
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className='light'>
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
         <ClerkProvider appearance={{
           elements: {

@@ -12,7 +12,7 @@ const NavBar = () => {
       background-light900_dark200 fixed 
       w-full gap-5 p-6
       shadow-light-300
-      dark:shadow-none sm:px-12 z-[99999]"
+      dark:shadow-none sm:px-12 z-10"
     >
       <Link href='/' className='flex items-center gap-1'>
         <Image
@@ -26,9 +26,9 @@ const NavBar = () => {
           <span className='text-primary-500'>OverFlow</span>
         </p>
       </Link>
-      <GlobarSearch/>
+      <GlobarSearch />
       <div className='flex-between gap-5'>
-        <Theme/>
+        <Theme />
         <SignedIn>
           <UserButton
             afterSignOutUrl="/"
@@ -42,7 +42,7 @@ const NavBar = () => {
             }}
           />
         </SignedIn>
-        <MoblieNav/>
+        <MoblieNav />
       </div>
     </nav>
   );

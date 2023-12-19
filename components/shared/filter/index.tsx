@@ -13,8 +13,8 @@ interface FitterProps {
 }
 const Filter = ({ filters, otherClasses, containerClasses }: FitterProps) => {
   return (
-    <div className={`relative ${containerClasses}`}>
-      <Select>
+    <div className={`relative  ${containerClasses}`}>
+      <Select >
         <SelectTrigger
           className={`${otherClasses}
         body-regular light-border background-light800_dark300
@@ -24,10 +24,10 @@ const Filter = ({ filters, otherClasses, containerClasses }: FitterProps) => {
             <SelectValue placeholder="Select a Filter" />
           </div>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className='text-dark100_light900'>
           <SelectGroup>
             {filters.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
+              <SelectItem key={item.value} value={item.value} className=''>
                 {item.name}
               </SelectItem>
             ))}

@@ -7,7 +7,7 @@ import TiptapToolbar from './toolbar/index';
 
 const Tiptap = (props: Omit<EditorProviderProps, 'children'>) => {
   return (
-    <div className='shadow-light100_dark100 light-border-2  rounded-lg border-2'>
+    <div className='shadow-light100_dark100 light-border-2  rounded-lg border-2 overflow-hidden'>
       <div className='overflow-auto'>
         <EditorProvider
           {...props}
