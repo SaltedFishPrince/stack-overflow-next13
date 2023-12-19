@@ -23,7 +23,7 @@ const extensions = [
   }),
   CodeBlockLowlight.configure({
     defaultLanguage: 'plaintext',
-    lowlight
+    lowlight,
   })
 ];
 

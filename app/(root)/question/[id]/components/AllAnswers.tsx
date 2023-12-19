@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "@/components/shared/parse-html";
+import Voting from "@/components/shared/voting";
 
 interface Props {
   questionId: string;
@@ -34,11 +35,11 @@ const AllAnswers = async ({
         <Filter filters={AnswerFilters} />
       </div>
 
-      <div>
+      <div className="mt-6">
         {result.answers.map((answer) => (
           <article
             key={answer._id}
-            className="text-dark100_light900 light-border border-b py-10"
+            className="text-dark100_light900 light-border border-b p-4 background-light900_dark200 mb-10 rounded-lg shadow-light100_dark100"
           >
             <div className="flex items-center justify-between">
               <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
@@ -63,7 +64,16 @@ const AllAnswers = async ({
                     </p>
                   </div>
                 </Link>
-                <div className="flex justify-end">VOTING</div>
+                <div className="flex justify-end">
+                  <Voting
+                    type="Answer"
+                    itemId={JSON.stringify(answer.id)}
+                    userId={JSON.stringify(userId)}
+                    upvotes={answer.upvotes.length}
+                    hasupVoted={answer.upvotes.includes(userId)}
+                    downvotes={answer.downvotes.length}
+                    hasdownVoted={answer.downvotes.includes(userId)} />
+                </div>
               </div>
             </div>
             <ParseHTML data={answer.content} />

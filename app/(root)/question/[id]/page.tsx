@@ -8,6 +8,7 @@ import { getQuestionById } from "@/lib/actions/question.action";
 import ParseHTML from "@/components/shared/parse-html";
 import Answer from "./components/Answer";
 import AllAnswers from "./components/AllAnswers";
+import Voting from "@/components/shared/voting";
 interface Props {
   params: {
     id: string
@@ -24,7 +25,7 @@ const Page = async ({ params }: Props) => {
   }
 
   return (
-    <>
+    <div className="w-full">
       <div className="flex-start w-full flex-col">
         <div className="flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
           <Link
@@ -42,7 +43,17 @@ const Page = async ({ params }: Props) => {
               {result.author.name}
             </p>
           </Link>
-          <div className="flex justify-end">Voting</div>
+          <div className="flex justify-end">
+            <Voting
+              type="Question"
+              itemId={JSON.stringify(result.id)}
+              userId={JSON.stringify(mongoUser!._id)}
+              upvotes={result.upvotes.length}
+              hasupVoted={result.upvotes.includes(mongoUser!._id)}
+              downvotes={result.downvotes.length}
+              hasdownVoted={result.downvotes.includes(mongoUser!._id)}
+              hasSaved={mongoUser?.saved.includes(result._id)} />
+          </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
           {result.title}
@@ -85,7 +96,7 @@ const Page = async ({ params }: Props) => {
 
       <AllAnswers
         questionId={result._id}
-        userId={JSON.stringify(mongoUser!._id)}
+        userId={mongoUser!._id}
         totalAnswers={result.answers.length}
       />
 
@@ -98,7 +109,7 @@ const Page = async ({ params }: Props) => {
           />
         )
       }
-    </>
+    </div>
   )
 }
 
