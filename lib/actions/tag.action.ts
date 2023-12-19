@@ -5,9 +5,14 @@ import { connectToDatabase } from "../mongoose";
 import { GetAllTagsParams, GetTopInteractedTagsParams } from "./shared.types";
 import Tag from "@/database/module/tag.model";
 
+/**
+ * @description
+ * @param params 
+ * @returns 
+ */
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { userId } = params;
 
@@ -29,9 +34,14 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   }
 }
 
+/**
+ * @description 获取全部标签
+ * @param params 
+ * @returns 
+ */
 export async function getAllTags(params: GetAllTagsParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const tags = await Tag.find({});
 

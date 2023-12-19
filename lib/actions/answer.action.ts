@@ -12,7 +12,7 @@ import { revalidatePath } from "next/cache";
  */
 export async function createAnswer(params: CreateAnswerParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { content, author, question, path } = params;
 
@@ -39,7 +39,7 @@ export async function createAnswer(params: CreateAnswerParams) {
  */
 export async function getAnswers(params: GetAnswersParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { questionId } = params;
 
@@ -60,7 +60,7 @@ export async function getAnswers(params: GetAnswersParams) {
  */
 export async function upvoteAnswer(params: AnswerVoteParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { answerId, userId, hasupVoted, hasdownVoted, path } = params;
     let updateQuery = {};
@@ -98,7 +98,7 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
  */
 export async function downvoteAnswer(params: AnswerVoteParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { answerId, userId, hasupVoted, hasdownVoted, path } = params;
 

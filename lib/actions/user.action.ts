@@ -16,7 +16,7 @@ import { FilterQuery } from "mongoose";
  */
 export async function getUserById({ userId }: { userId: string }): Promise<IUser> {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     const user = await User.findOne({ clerkId: userId }).exec();
     return user;
   } catch (error) {
@@ -32,7 +32,7 @@ export async function getUserById({ userId }: { userId: string }): Promise<IUser
  */
 export async function createUser(userData: CreateUserParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const newUser = await User.create(userData);
 
@@ -49,7 +49,7 @@ export async function createUser(userData: CreateUserParams) {
  */
 export async function updateUser(params: UpdateUserParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { clerkId, updateData, path } = params;
 
@@ -70,7 +70,7 @@ export async function updateUser(params: UpdateUserParams) {
  */
 export async function deleteUser(params: DeleteUserParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { clerkId } = params;
 
@@ -110,7 +110,7 @@ export async function deleteUser(params: DeleteUserParams) {
  */
 export async function getAllUsers(params: GetAllUsersParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     // const { page = 1, pageSize = 20, filter, searhQuery } = params;
 
@@ -128,7 +128,7 @@ export async function getAllUsers(params: GetAllUsersParams) {
  */
 export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     const { userId, questionId, path } = params
     const user = await User.findById(userId);
 
@@ -164,9 +164,8 @@ export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
  * @description 获取用户收藏的问题
  */
 export async function getSavedQuestions(params: GetSavedQuestionsParams) {
-
   try {
-    connectToDatabase();
+    await connectToDatabase();
     const { clerkId, page = 1, pageSize = 10, filter, searchQuery } = params;
 
     const query: FilterQuery<typeof Question> = searchQuery
