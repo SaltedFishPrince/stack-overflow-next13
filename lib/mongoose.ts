@@ -8,7 +8,10 @@ export const connectToDatabase = async () => {
   }
 
   try {
-    await mongoose.connect('mongodb://127.0.0.1:27017/devflow')
+    if (!process.env.MONGODB_URL) {
+      throw new Error('MONGODB_URL is not defined')
+    }
+    await mongoose.connect(process.env.MONGODB_URL)
     isConnect = true
     console.log('database connected success')
   } catch (error) {

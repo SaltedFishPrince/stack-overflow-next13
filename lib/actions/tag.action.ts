@@ -6,7 +6,6 @@ import { GetAllTagsParams, GetTopInteractedTagsParams } from "./shared.types";
 import Tag from "@/database/module/tag.model";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
-  console.log("🚀 ~ file: tag.action.ts:9 ~ getTopInteractedTags ~ params:", params)
   try {
     connectToDatabase();
 
