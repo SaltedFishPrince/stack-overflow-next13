@@ -14,8 +14,8 @@ import QuestionTab from "@/components/shared/question-tab";
 import AnswersTab from "@/components/shared/answers-tab";
 
 const Page = async ({ params, searchParams }: URLProps) => {
-  const clerkId = process.env.NEXT_PUBLIC_USER_ID
-  const userInfo = await getUserInfo({ userId: params.id });
+  const clerkId = params.id
+  const userInfo = await getUserInfo({ userId: clerkId });
   if (!userInfo) return <div>not user info</div>
   return (
     <>

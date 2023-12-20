@@ -260,12 +260,12 @@ export async function getUserInfo(params: GetUserByIdParams) {
   try {
     await connectToDatabase()
     const { userId } = params
-    const user = await User.findById(userId)
+    const user = await User.findOne({ clerkId: userId }).exec()
     if (!user) {
       throw new Error("User not found");
     }
-    const totalQuestions = await Question.countDocuments({ author: userId })
-    const totalAnswers = await Answer.countDocuments({ author: userId })
+    const totalQuestions = await Question.countDocuments({ author: user._id })
+    const totalAnswers = await Answer.countDocuments({ author: user._id })
     return { user, totalQuestions, totalAnswers }
   } catch (error) {
     console.log("🚀 ~ file: user.action.ts:268 ~ getUserInfo ~ error:", error)

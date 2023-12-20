@@ -9,6 +9,15 @@ import { usePathname } from 'next/navigation';
 
 const LeftSidebar = () => {
   const pathname = usePathname();
+  const userId = process.env.NEXT_PUBLIC_USER_ID;
+  const isActiveAction = (route: string) => (pathname.includes(route) && route.length > 1) ||
+    pathname === route;
+  const isProfileRoute = (route: string) => {
+    if (route === '/profile') {
+      return `${route}/${userId}`
+    }
+    return route
+  }
   return (
     <section
       className="background-light900_dark200 light-border custom-scrollbar sticky
@@ -16,9 +25,8 @@ const LeftSidebar = () => {
       border-l p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:min-w-[266px] max-lg:min-w-[104px]">
       <div className="flex flex-1 flex-col gap-6">
         {sidebarLinks.map((item) => {
-          const isActive =
-            (pathname.includes(item.route) && item.route.length > 1) ||
-            pathname === item.route;
+          const isActive = isActiveAction(item.route)
+          item.route = isProfileRoute(item.route)
           return (
             <Link
               key={item.route}
