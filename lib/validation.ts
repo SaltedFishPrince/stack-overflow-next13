@@ -13,5 +13,14 @@ export type QuestionsSchemaType = typeof QuestionsSchema;
 export const AnswerSchema = z.object({
   answer: z.string().min(10),
 });
-
 export type AnswerSchemaType = typeof AnswerSchema;
+
+// 修改用户信息验证
+export const ProfileSchema = z.object({
+  name: z.string().min(5).max(50),
+  bio: z.string().min(10).max(500),
+  username: z.string().min(5).max(15),
+  portfolioWebsite: z.string().url(),
+  location: z.string().min(5).max(50),
+});
+export type ProfileSchemaType = typeof ProfileSchema;
