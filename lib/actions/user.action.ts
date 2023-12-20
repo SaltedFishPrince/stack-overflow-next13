@@ -192,6 +192,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
   }
 
 }
+
 /**
  * @description 获取用户所有回答
  * @param params 
@@ -199,23 +200,26 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
  */
 export async function getUserAnswers(params: GetUserStatsParams) {
   try {
-    await connectToDatabase()
-    const { userId } = params
-    const answers = await Answer.findOne({ author: userId })
-      .populate(
-        [
-          {
-            path: "author",
-            model: User
-          },
-          {
-            path: "question",
-            model: Question
-          }
-        ]
-      )
-    return { answers: [answers] }
+    connectToDatabase();
+
+    const { userId, page = 1, pageSize = 10 } = params;
+
+    const skipAmount = (page - 1) * pageSize;
+
+    const totalAnswers = await Answer.countDocuments({ author: userId });
+
+    const userAnswers = await Answer.find({ author: userId })
+      .sort({ upvotes: -1 })
+      .skip(skipAmount)
+      .limit(pageSize)
+      .populate("question", "_id title")
+      .populate("author", "_id clerkId name picture");
+
+    const isNextAnswer = totalAnswers > skipAmount + userAnswers.length;
+
+    return { totalAnswers, answers: userAnswers, isNextAnswer };
   } catch (error) {
+    console.log("🚀 ~ file: user.action.ts:222 ~ getUserAnswers ~ error:", error)
 
   }
 }
@@ -226,22 +230,26 @@ export async function getUserAnswers(params: GetUserStatsParams) {
  */
 export async function getUserQuestions(params: GetUserStatsParams) {
   try {
-    await connectToDatabase()
-    const { userId } = params
-    const questions = await Question.findOne({ author: userId })
-      .populate([
-        {
-          path: "author",
-          model: User
-        },
-        {
-          path: "tags",
-          model: Tag,
-        }
-      ])
-    return { questions: [questions] }
-  } catch (error) {
+    connectToDatabase();
 
+    const { userId, page = 1, pageSize = 10 } = params;
+
+    const skipAmount = (page - 1) * pageSize;
+
+    const totalQuestions = await Question.countDocuments({ author: userId });
+
+    const userQuestions = await Question.find({ author: userId })
+      .sort({ createdAt: -1, views: -1, upvotes: -1 })
+      .skip(skipAmount)
+      .limit(pageSize)
+      .populate("tags", "_id name")
+      .populate("author", "_id clerkId name picture");
+
+    const isNextQuestions = totalQuestions > skipAmount + userQuestions.length;
+
+    return { totalQuestions, questions: userQuestions, isNextQuestions };
+  } catch (error) {
+    console.log("🚀 ~ file: user.action.ts:252 ~ getUserQuestions ~ error:", error)
   }
 }
 
@@ -253,10 +261,13 @@ export async function getUserInfo(params: GetUserByIdParams) {
     await connectToDatabase()
     const { userId } = params
     const user = await User.findById(userId)
+    if (!user) {
+      throw new Error("User not found");
+    }
     const totalQuestions = await Question.countDocuments({ author: userId })
     const totalAnswers = await Answer.countDocuments({ author: userId })
     return { user, totalQuestions, totalAnswers }
   } catch (error) {
-
+    console.log("🚀 ~ file: user.action.ts:268 ~ getUserInfo ~ error:", error)
   }
 }
