@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
-import QuestionForm from './components/QuestionForm';
+
 import { getUserById } from '@/lib/actions/user.action';
+import QuestionForm from '@/components/form/question';
 
 const AskQuestion = async () => {
   const userId = process.env.NEXT_PUBLIC_USER_ID;

@@ -2,9 +2,10 @@
 
 import Answer from "@/database/module/answer.model";
 import { connectToDatabase } from "../mongoose";
-import { AnswerVoteParams, CreateAnswerParams, GetAnswersParams } from "./shared.types";
+import { AnswerVoteParams, CreateAnswerParams, DeleteAnswerParams, GetAnswersParams } from "./shared.types";
 import Question from "@/database/module/question.model";
 import { revalidatePath } from "next/cache";
+import Interaction from "@/database/module/interaction.model";
 
 /**
  * @description 创建回答
@@ -129,5 +130,33 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
   } catch (error) {
     console.log(error);
     throw error;
+  }
+}
+
+
+/**
+ * @description 删除回答
+ */
+export async function deleteAnswer(params: DeleteAnswerParams) {
+  try {
+    await connectToDatabase()
+    const { answerId, path } = params;
+
+    const answer = await Answer.findById(answerId);
+
+    if (!answer) {
+      throw new Error("Answer not found");
+    }
+
+    await answer.deleteOne({ _id: answerId });
+    await Question.updateMany(
+      { _id: answer.question },
+      { $pull: { answers: answerId } }
+    );
+    await Interaction.deleteMany({ answer: answerId });
+    revalidatePath(path)
+  } catch (error) {
+    console.log("🚀 ~ file: answer.action.ts:159 ~ deleteAnswer ~ error:", error)
+
   }
 }

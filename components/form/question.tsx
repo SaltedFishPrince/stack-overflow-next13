@@ -18,38 +18,59 @@ import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import type * as z from 'zod';
-import Tiptap from '../../../../components/tiptap';
-import { Badge } from '../../../../components/ui/badge';
-import { Button } from '../../../../components/ui/button';
-import { createQuestion } from '@/lib/actions/question.action';
+import Tiptap from '@/components/tiptap';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { createQuestion, editQuestion } from '@/lib/actions/question.action';
 import { useRouter, usePathname } from 'next/navigation'
 interface QuestionFormProps {
+  type?: "Edit" | "Add";
   userId: string
+  questionDetails?: string;
 }
-const QuestionForm = ({ userId }: QuestionFormProps) => {
+const QuestionForm = ({ userId, questionDetails, type = 'Add' }: QuestionFormProps) => {
   const [isSubmit, setIsSubmit] = React.useState(false);
   const router = useRouter();
   const pathname = usePathname()
+
+
+  const parsedQuestionDetails =
+    questionDetails && JSON.parse(questionDetails || "");
+
+  const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name);
+
   const form = useForm<z.infer<QuestionsSchemaType>>({
     resolver: zodResolver(QuestionsSchema),
     defaultValues: {
-      title: '',
-      explanation: '',
-      tags: []
+      title: parsedQuestionDetails?.title || "",
+      explanation: parsedQuestionDetails?.content || "",
+      tags: groupedTags || [],
     }
   });
 
   const onSubmit = async (values: z.infer<QuestionsSchemaType>) => {
     setIsSubmit(true);
     try {
-      await createQuestion({
-        title: values.title,
-        content: values.explanation,
-        tags: values.tags,
-        author: JSON.parse(userId),
-        path: pathname
-      })
-      router.push('/')
+      if (type === "Edit") {
+        await editQuestion({
+          questionId: parsedQuestionDetails._id,
+          title: values.title,
+          content: values.explanation,
+          path: pathname,
+        });
+
+        router.push(`/question/${parsedQuestionDetails._id}`);
+      } else {
+        await createQuestion({
+          title: values.title,
+          content: values.explanation,
+          tags: values.tags,
+          author: JSON.parse(userId),
+          path: pathname,
+        });
+
+        router.push("/");
+      }
     } catch {
 
     } finally {
@@ -116,7 +137,6 @@ const QuestionForm = ({ userId }: QuestionFormProps) => {
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault()
-
                     }
                   }}
                   {...field}
@@ -140,7 +160,9 @@ const QuestionForm = ({ userId }: QuestionFormProps) => {
                 <span className="text-primary-500">*</span>
               </FormLabel>
               <FormControl className="mt-3.5">
-                <Tiptap onBlur={() => field.onBlur()}
+                <Tiptap
+                  content={parsedQuestionDetails.content || ''}
+                  onBlur={() => field.onBlur()}
                   onUpdate={({ editor }) => {
                     field.onChange(editor.getHTML())
                   }} />
@@ -166,6 +188,7 @@ const QuestionForm = ({ userId }: QuestionFormProps) => {
                   <Input
                     className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                     placeholder="Add tags..."
+                    disabled={type === 'Edit'}
                     onKeyDown={(e) => handleInputKeyDown(e, field)}
                   />
                   {
@@ -174,19 +197,23 @@ const QuestionForm = ({ userId }: QuestionFormProps) => {
                         {field.value.map((tag) => (
                           <Badge
                             key={tag}
-                            className="medium-big background-light800_dark300 text-light400_light500
-                            flex items-center justify-center gap-2 rounded-md border-none px-4 py-2
-                             capitalize"
+                            className="subtle-medium background-light800_dark300 text-light400_light500 flex items-center justify-center gap-2 rounded-md border-none px-4 py-2 capitalize"
+                            onClick={() =>
+                              type !== "Edit"
+                                ? handleTagRemove(tag, field)
+                                : () => { }
+                            }
                           >
                             {tag}
-                            <Image
-                              src="/assets/icons/close.svg"
-                              alt="Close icon"
-                              width={12}
-                              height={12}
-                              className="cursor-pointer object-contain invert-0 dark:invert"
-                              onClick={() => handleTagRemove(tag, field)}
-                            />
+                            {type !== "Edit" && (
+                              <Image
+                                src="/assets/icons/close.svg"
+                                alt="Close icon"
+                                width={12}
+                                height={12}
+                                className="cursor-pointer object-contain invert-0 dark:invert"
+                              />
+                            )}
                           </Badge>
                         ))}
                       </div>
@@ -208,10 +235,11 @@ const QuestionForm = ({ userId }: QuestionFormProps) => {
           className="primary-gradient w-fit !text-light-900"
           disabled={isSubmit}
         >
-          {
-            isSubmit && <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          }
-          {isSubmit ? 'loading...' : 'edit'}
+          {isSubmit ? (
+            <>{type === "Edit" ? "Editing..." : "Posting..."}</>
+          ) : (
+            <>{type === "Edit" ? "Edit Question" : "Ask a Question"}</>
+          )}
         </Button>
       </form>
     </Form>

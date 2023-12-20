@@ -6,8 +6,8 @@ import RenderTag from "@/components/shared/render-tag";
 import { getUserById } from "@/lib/actions/user.action";
 import { getQuestionById } from "@/lib/actions/question.action";
 import ParseHTML from "@/components/shared/parse-html";
-import Answer from "./components/Answer";
-import AllAnswers from "./components/AllAnswers";
+import Answer from "../components/Answer";
+import AllAnswers from "../components/AllAnswers";
 import Voting from "@/components/shared/voting";
 import { viewQuestion } from "@/lib/actions/interaction.action";
 interface Props {
