@@ -3,11 +3,12 @@
 import User from "@/database/module/user.model";
 import { connectToDatabase } from "../mongoose";
 import { IUser } from '@/database/module/user.model'
-import { CreateUserParams, DeleteUserParams, GetAllUsersParams, GetSavedQuestionsParams, ToggleSaveQuestionParams, UpdateUserParams } from "./shared.types";
+import { CreateUserParams, DeleteUserParams, GetAllUsersParams, GetSavedQuestionsParams, GetUserByIdParams, GetUserStatsParams, ToggleSaveQuestionParams, UpdateUserParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/module/question.model";
 import Tag from "@/database/module/tag.model";
 import { FilterQuery } from "mongoose";
+import Answer from "@/database/module/answer.model";
 
 /**
  * @description 根据Id查询用户
@@ -190,4 +191,72 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
 
   }
 
+}
+/**
+ * @description 获取用户所有回答
+ * @param params 
+ * @returns 
+ */
+export async function getUserAnswers(params: GetUserStatsParams) {
+  try {
+    await connectToDatabase()
+    const { userId } = params
+    const answers = await Answer.findOne({ author: userId })
+      .populate(
+        [
+          {
+            path: "author",
+            model: User
+          },
+          {
+            path: "question",
+            model: Question
+          }
+        ]
+      )
+    return { answers: [answers] }
+  } catch (error) {
+
+  }
+}
+
+
+/**
+ * @description 获取用户所有问题
+ */
+export async function getUserQuestions(params: GetUserStatsParams) {
+  try {
+    await connectToDatabase()
+    const { userId } = params
+    const questions = await Question.findOne({ author: userId })
+      .populate([
+        {
+          path: "author",
+          model: User
+        },
+        {
+          path: "tags",
+          model: Tag,
+        }
+      ])
+    return { questions: [questions] }
+  } catch (error) {
+
+  }
+}
+
+/**
+ * @description 获取用户信息
+ */
+export async function getUserInfo(params: GetUserByIdParams) {
+  try {
+    await connectToDatabase()
+    const { userId } = params
+    const user = await User.findById(userId)
+    const totalQuestions = await Question.countDocuments({ author: userId })
+    const totalAnswers = await Answer.countDocuments({ author: userId })
+    return { user, totalQuestions, totalAnswers }
+  } catch (error) {
+
+  }
 }
