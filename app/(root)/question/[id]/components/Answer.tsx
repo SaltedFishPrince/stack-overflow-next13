@@ -27,6 +27,7 @@ interface Props {
 
 const Answer = ({ question, questionId, authorId }: Props) => {
   const pathname = usePathname();
+  console.log("🚀 ~ file: Answer.tsx:30 ~ Answer ~ pathname:", pathname)
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const editorRef = React.useRef<null | Editor>(null)
   const form = useForm<z.infer<AnswerSchemaType>>({

@@ -9,6 +9,7 @@ import ParseHTML from "@/components/shared/parse-html";
 import Answer from "./components/Answer";
 import AllAnswers from "./components/AllAnswers";
 import Voting from "@/components/shared/voting";
+import { viewQuestion } from "@/lib/actions/interaction.action";
 interface Props {
   params: {
     id: string
@@ -22,6 +23,10 @@ const Page = async ({ params }: Props) => {
 
   if (clerkId) {
     mongoUser = await getUserById({ userId: clerkId });
+    await viewQuestion({
+      userId: mongoUser._id,
+      questionId: params.id,
+    })
   }
 
 
