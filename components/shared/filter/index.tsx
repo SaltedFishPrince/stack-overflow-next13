@@ -24,8 +24,8 @@ const Filter = ({ filters, otherClasses, containerClasses }: FitterProps) => {
             <SelectValue placeholder="Select a Filter" />
           </div>
         </SelectTrigger>
-        <SelectContent className='text-dark100_light900'>
-          <SelectGroup>
+        <SelectContent className='text-dark100_light900 background-light900_dark300'>
+          <SelectGroup className=''>
             {filters.map((item) => (
               <SelectItem key={item.value} value={item.value} className=''>
                 {item.name}

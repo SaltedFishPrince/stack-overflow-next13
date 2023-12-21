@@ -161,7 +161,7 @@ const QuestionForm = ({ userId, questionDetails, type = 'Add' }: QuestionFormPro
               </FormLabel>
               <FormControl className="mt-3.5">
                 <Tiptap
-                  content={parsedQuestionDetails.content || ''}
+                  content={parsedQuestionDetails?.content || ''}
                   onBlur={() => field.onBlur()}
                   onUpdate={({ editor }) => {
                     field.onChange(editor.getHTML())
