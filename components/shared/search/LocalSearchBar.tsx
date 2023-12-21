@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import React from 'react';
 
-const Icon = ({ imgSrc }: { imgSrc:string }) => {
+const Icon = ({ imgSrc }: { imgSrc: string }) => {
   return (
     <Image
       src={imgSrc}
@@ -31,7 +31,6 @@ const LocalSearchBar = ({
   otherClasses
 }: props) => {
   const [value] = React.useState('');
-  console.log(route);
   return (
     <div
       className={`
@@ -44,7 +43,7 @@ const LocalSearchBar = ({
         type="text"
         placeholder={placeholder}
         value={value}
-        onChange={() => {}}
+        onChange={() => { }}
         className="paragraph-regular no-focus placeholder background-light800_darkgradient border-none shadow-none outline-none"
       />
       {iconPosition === 'right' && (<Icon imgSrc={imgSrc} />)}
