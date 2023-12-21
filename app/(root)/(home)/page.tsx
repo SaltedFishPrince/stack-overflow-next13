@@ -9,7 +9,7 @@ import HomeQuestion from './components/Question';
 import { SearchParamsProps } from '@/types';
 
 export default function Home({ searchParams }: SearchParamsProps) {
-  const { q = '' } = searchParams
+  const { q = '', filter = '' } = searchParams
   return (
     <div>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -37,7 +37,7 @@ export default function Home({ searchParams }: SearchParamsProps) {
 
       <HomeFilters />
 
-      <HomeQuestion searchQuery={q} />
+      <HomeQuestion searchQuery={q} filter={filter} />
     </div>
   );
 }

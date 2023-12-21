@@ -7,12 +7,13 @@ import { getSavedQuestions } from "@/lib/actions/user.action"
 import { SearchParamsProps } from "@/types"
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
-  const { q } = searchParams
+  const { q, filter } = searchParams
   const clerkId = process.env.NEXT_PUBLIC_USER_ID
 
   const result = await getSavedQuestions({
     searchQuery: q,
-    clerkId: clerkId!
+    clerkId: clerkId!,
+    filter
   })
   if (!result) return <div>not</div>
   return (

@@ -2,9 +2,10 @@ import { getQuestions } from '@/lib/actions/question.action';
 import QuestionCard from '@/components/cards/QuestionCard';
 import NotResult from '@/components/shared/not-result';
 
-const HomeQuestion = async ({ searchQuery }: { searchQuery: string }) => {
+const HomeQuestion = async ({ searchQuery, filter }: { searchQuery: string, filter: string }) => {
   const result = await getQuestions({
-    searchQuery
+    searchQuery,
+    filter
   })
   const { questions } = result || {}
   return (
