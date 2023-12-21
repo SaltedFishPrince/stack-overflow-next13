@@ -195,7 +195,6 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
   }
 }
 
-
 /**
  * @description 修改问题
  */
@@ -217,5 +216,20 @@ export async function editQuestion(params: EditQuestionParams) {
     revalidatePath(path);
   } catch (error) {
 
+  }
+}
+
+/**
+ * @description 获取热门问题
+ */
+export async function getHotQuestions() {
+  try {
+    await connectToDatabase()
+    const hotQuestions = await Question.find({})
+      .sort({ views: -1, upvotes: -1 })
+      .limit(5);
+    return hotQuestions
+  } catch (error) {
+    console.log("🚀 ~ file: question.action.ts:233 ~ getHotQuestions ~ error:", error)
   }
 }

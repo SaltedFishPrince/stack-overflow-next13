@@ -88,3 +88,22 @@ export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
     console.log(error)
   }
 }
+
+
+/**
+ * @description 获取热门标签
+ */
+
+export async function getHotTags() {
+  try {
+    await connectToDatabase();
+    const hotTags = await Tag.aggregate([
+      { $project: { name: 1, numberOfQuestions: { $size: "$questions" } } },
+      { $sort: { numberOfQuestions: -1 } },
+      { $limit: 5 },
+    ])
+    return hotTags
+  } catch (error) {
+
+  }
+}
