@@ -3,7 +3,6 @@ import RenderTag from '../render-tag';
 
 const PopularTags = async () => {
   const hotTags = await getHotTags() ?? []
-  console.log("🚀 ~ file: PopularTags.tsx:6 ~ PopularTags ~ hotTags:", hotTags)
   return (
     <div className="mt-16">
       <h3 className="h3-bold text-dark200_light900">Popular Tags</h3>
