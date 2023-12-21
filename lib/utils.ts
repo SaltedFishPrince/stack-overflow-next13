@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import queryString from 'query-string';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -62,3 +63,51 @@ export const getJoinedDate = (date: Date): string => {
 
   return joinedDate;
 };
+
+
+interface UrlQueryParams {
+  params: string;
+  searchValue: {
+    [k: string]: any
+  };
+}
+export const formUrlQuery = ({ params, searchValue }: UrlQueryParams) => {
+  const currentUrl = queryString.parse(params);
+  Object.entries(searchValue).forEach(([key, value]) => {
+    if (value === '') {
+      delete currentUrl[key];
+    } else {
+      currentUrl[key] = value;
+    }
+  });
+  return queryString.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true }
+  );
+}
+
+
+export const debounce = <T extends (...args: any) => any>(func: T, wait: number, immediate: boolean = false) => {
+  let timeout: NodeJS.Timeout | null = null;
+  const later = (context: T, args: Parameters<T>) => {
+    timeout = null;
+
+    if (!immediate) {
+      func.apply(context, args);
+    }
+  };
+  return function (this: any, ...args: Parameters<T>) {
+    const context = this;
+    const callNow = immediate && !timeout;
+    timeout && clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      later(context, args)
+    }, wait);
+    if (callNow) {
+      func.apply(context, args);
+    }
+  };
+}

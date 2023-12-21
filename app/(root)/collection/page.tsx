@@ -4,13 +4,17 @@ import NotResult from "@/components/shared/not-result"
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar"
 import { QuestionFilters } from "@/constants/filters"
 import { getSavedQuestions } from "@/lib/actions/user.action"
+import { SearchParamsProps } from "@/types"
 
-const Page = async () => {
+const Page = async ({ searchParams }: SearchParamsProps) => {
+  const { q } = searchParams
   const clerkId = process.env.NEXT_PUBLIC_USER_ID
 
   const result = await getSavedQuestions({
+    searchQuery: q,
     clerkId: clerkId!
-  }) ?? { saved: [] }
+  })
+  if (!result) return <div>not</div>
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>

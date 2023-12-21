@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import HomeFilters from './components/HomeFilter';
 import HomeQuestion from './components/Question';
+import { SearchParamsProps } from '@/types';
 
-export default function Home () {
+export default function Home({ searchParams }: SearchParamsProps) {
+  const { q = '' } = searchParams
   return (
     <div>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -24,6 +26,7 @@ export default function Home () {
           route="/"
           placeholder="Search global question"
           imgSrc="/assets/icons/search.svg"
+          iconPosition='right'
         />
         <Filter
           filters={HomePageFilters}
@@ -32,9 +35,9 @@ export default function Home () {
         />
       </div>
 
-      <HomeFilters/>
+      <HomeFilters />
 
-      <HomeQuestion/>
+      <HomeQuestion searchQuery={q} />
     </div>
   );
 }

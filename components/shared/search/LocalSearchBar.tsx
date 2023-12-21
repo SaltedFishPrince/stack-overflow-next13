@@ -1,6 +1,9 @@
 'use client';
 import { Input } from '@/components/ui/input';
+import { debounce, formUrlQuery } from '@/lib/utils';
 import Image from 'next/image';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
 import React from 'react';
 
 const Icon = ({ imgSrc }: { imgSrc: string }) => {
@@ -23,6 +26,8 @@ interface props {
   otherClasses?: string;
 }
 
+
+
 const LocalSearchBar = ({
   route,
   iconPosition = 'left',
@@ -30,7 +35,29 @@ const LocalSearchBar = ({
   placeholder = '',
   otherClasses
 }: props) => {
-  const [value] = React.useState('');
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const query = searchParams.get('q')
+  const [searchValue, setSearchValue] = React.useState(query || '');
+
+  React.useEffect(() => {
+    const delayDebounceFn = debounce((searchValue: string) => {
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        searchValue: { q: searchValue },
+      });
+
+      router.push(newUrl, { scroll: false });
+    }, 500)
+    delayDebounceFn(searchValue)
+  }, [searchValue, route, pathname, router, searchParams, query]);
+
+
+  const handleSearchInputChange = (value: string) => {
+    setSearchValue(value)
+  };
+
   return (
     <div
       className={`
@@ -42,8 +69,8 @@ const LocalSearchBar = ({
       <Input
         type="text"
         placeholder={placeholder}
-        value={value}
-        onChange={() => { }}
+        value={searchValue}
+        onChange={(e) => { handleSearchInputChange(e.target.value) }}
         className="paragraph-regular no-focus placeholder background-light800_darkgradient border-none shadow-none outline-none"
       />
       {iconPosition === 'right' && (<Icon imgSrc={imgSrc} />)}

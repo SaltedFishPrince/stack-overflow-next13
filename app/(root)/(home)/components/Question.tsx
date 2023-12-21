@@ -2,8 +2,10 @@ import { getQuestions } from '@/lib/actions/question.action';
 import QuestionCard from '@/components/cards/QuestionCard';
 import NotResult from '@/components/shared/not-result';
 
-const HomeQuestion = async () => {
-  const result = await getQuestions({})
+const HomeQuestion = async ({ searchQuery }: { searchQuery: string }) => {
+  const result = await getQuestions({
+    searchQuery
+  })
   const { questions } = result || {}
   return (
     <div className="mt-10 flex w-full flex-col gap-6">
