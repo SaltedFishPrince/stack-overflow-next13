@@ -47,6 +47,3 @@ export interface BadgeCounts {
 
 export type BadgeCriteriaType = keyof typeof BADGE_CRITERIA;
 
-export type ThemeMode = 'light' | 'dark' | 'system';
-
-export type Theme = Exclude<ThemeMode, 'system'>;

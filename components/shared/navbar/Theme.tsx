@@ -1,11 +1,5 @@
 'use client';
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger
-} from '@/components/ui/menubar';
+import { Button } from '@/components/ui/button';
 import { themes } from '@/constants/themes';
 import { useTheme } from '@/context/theme-provider';
 import Image from 'next/image';
@@ -32,9 +26,9 @@ const MoonIcon = () => {
 };
 
 const Theme = () => {
-  const { themeValue, setThemeMode } = useTheme();
-  const { mode, theme } = themeValue;
+  const { isDark, toggleTheme } = useTheme();
   return (
+<<<<<<< HEAD
     <Menubar className='relative border-none bg-transparent shadow-none'>
       <MenubarMenu >
         <MenubarTrigger
@@ -72,10 +66,12 @@ const Theme = () => {
               </MenubarItem>
             );
           })}
+=======
+    <Button onClickCapture={toggleTheme}>
+      {isDark ? <MoonIcon /> : <SunIcon />}
+    </Button>
+>>>>>>> theme-context
 
-        </MenubarContent>
-      </MenubarMenu>
-    </Menubar>
 
   );
 };
