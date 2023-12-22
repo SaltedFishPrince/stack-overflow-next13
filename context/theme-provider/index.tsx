@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-
+import Cookies from 'js-cookie'
 type ThemeContext = {
   isDark: boolean
   toggleTheme: (event: React.MouseEvent) => void
@@ -8,21 +8,10 @@ type ThemeContext = {
 
 const themeContext = React.createContext<ThemeContext | null>(null);
 
-const determineCurrentTheme = () => {
-  if (typeof window !== 'undefined') {
-    const prefersDark =
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    const setting = localStorage.getItem('color-schema') || 'auto';
-    return setting === 'dark' || (prefersDark && setting !== 'light')
-  }
-  return true
-}
 
-export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isDark, setIsDark] = React.useState(() => determineCurrentTheme())
-
+export const ThemeProvider = ({ children, theme }: { children: React.ReactNode, theme: string }) => {
+  const [isDark, setIsDark] = React.useState(() => theme === 'dark')
   const toggleTheme = (event: React.MouseEvent) => {
     // @ts-expect-error experimental API
     const isAppearanceTransition = document.startViewTransition
@@ -66,7 +55,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   React.useEffect(() => {
-    localStorage.setItem('color-schema', isDark ? 'dark' : 'light')
+    Cookies.set('theme', isDark ? 'dark' : 'light')
     document.documentElement.classList.toggle('dark', isDark)
   }, [isDark])
 
@@ -87,6 +76,4 @@ export const useTheme = () => {
   if (!context) { throw new Error('useTheme must be used within a ThemeProvider'); }
   return context;
 };
-
-
 

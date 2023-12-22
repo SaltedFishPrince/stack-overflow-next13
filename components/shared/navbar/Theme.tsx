@@ -4,7 +4,6 @@ import { useTheme } from '@/context/theme-provider';
 import useIsServer from '@/hooks/useIsServer';
 import Image from 'next/image';
 import React from 'react';
-
 const SunIcon = () => {
   return (
     <Image

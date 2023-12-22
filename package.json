@@ -29,6 +29,7 @@
     "clsx": "^2.0.0",
     "eslint-config-standard": "^17.1.0",
     "html-react-parser": "^5.0.10",
+    "js-cookie": "^3.0.5",
     "lowlight": "^3.1.0",
     "lucide-react": "^0.294.0",
     "mongodb": "^6.3.0",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/prismjs": "^1.26.3",
     "@types/react": "^18",
