@@ -2,7 +2,7 @@ import UserCard from "@/components/cards/UserCard";
 import Filter from "@/components/shared/filter";
 import NoResult from "@/components/shared/not-result";
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
-import { UserFilters } from "@/constants/filters";
+import { TagFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.action";
 import { SearchParamsProps } from "@/types";
 import Link from "next/link";
@@ -28,7 +28,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
         />
 
         <Filter
-          filters={UserFilters}
+          filters={TagFilters}
           otherClasses="min-h-[56px] sm:min-w-[170px]"
         />
       </div>
