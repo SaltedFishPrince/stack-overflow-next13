@@ -1,11 +1,18 @@
 import { getQuestions } from '@/lib/actions/question.action';
 import QuestionCard from '@/components/cards/QuestionCard';
 import NotResult from '@/components/shared/not-result';
-
-const HomeQuestion = async ({ searchQuery, filter }: { searchQuery: string, filter: string }) => {
+import Pagination from '@/components/shared/pagination';
+interface Props {
+  searchQuery: string
+  filter: string
+  page: number
+}
+const HomeQuestion = async ({ searchQuery, filter, page }: Props) => {
   const result = await getQuestions({
     searchQuery,
-    filter
+    filter,
+    page,
+    pageSize: 2
   })
   const { questions } = result || {}
   return (
@@ -35,6 +42,12 @@ const HomeQuestion = async ({ searchQuery, filter }: { searchQuery: string, filt
             linkTitle="Ask a Question"
           />
       }
+      <div className="mt-10">
+        <Pagination
+          pageNumber={page}
+          isNext={result.isNext}
+        />
+      </div>
     </div>
   );
 };
