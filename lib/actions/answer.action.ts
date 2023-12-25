@@ -63,7 +63,6 @@ export async function getAnswers(params: GetAnswersParams) {
         break;
     }
 
-
     const answers = await Answer.find({ question: questionId })
       .populate("author", "_id clerkId name picture")
       .sort(sortOptions);
