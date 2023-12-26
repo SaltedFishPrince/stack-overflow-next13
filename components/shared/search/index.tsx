@@ -34,7 +34,6 @@ const GlobarSearch = () => {
 
   React.useEffect(() => {
     setOpen(false)
-    console.log(2)
     document.addEventListener("click", handleOutsideClick);
     return () => {
       setOpen(false)

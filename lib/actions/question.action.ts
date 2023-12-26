@@ -86,13 +86,21 @@ export async function createQuestion(params: CreateQuestionParams) {
         { $setOnInsert: { name: tag }, $push: { questions: question._id } }, // 更新操作，如果找不到匹配的文档，则插入新文档
         { upsert: true, new: true } // 选项，upsert 表示如果找不到匹配的文档则插入新文档，new 表示返回更新后的文档
       );
-
       tagDocuments.push(existingTag._id);
     }
 
     await Question.findByIdAndUpdate(question._id, {
       $push: { tags: { $each: tagDocuments } }, // $each 将多个值一次性添加
     });
+
+    await Interaction.create({
+      user: author,
+      question: question._id,
+      action: "ask_question",
+      tags: tagDocuments,
+    });
+
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } });
 
     revalidatePath(path)
   } catch (error) {
@@ -127,7 +135,7 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
 }
 
 /**
- * @description 赞成问题
+ * @description 点赞问题
  * @param params 
  */
 export async function upvoteQuestion(params: QuestionVoteParams) {
@@ -156,8 +164,17 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
       throw new Error("Question not found");
     }
 
-    // Increment author's reputation bt +10 for upvoting a question
+    // 点赞人加分
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -2 : 2 },
+    });
 
+    // 问题作者加分
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasupVoted ? -10 : 10 },
+    });
+
+    // Increment author's reputation bt +10 for upvoting a question
     revalidatePath(path);
   } catch (error) {
     console.log(error);
@@ -195,7 +212,14 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     if (!question) {
       throw new Error("Question not found");
     }
+    // Increment author's reputation
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasdownVoted ? -2 : 2 },
+    });
 
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasdownVoted ? -10 : 10 },
+    });
     // Increment author's reputation bt +10 for upvoting a question
 
     revalidatePath(path);
@@ -213,7 +237,7 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
   try {
     await connectToDatabase();
     const { questionId, path } = params;
-
+    const question = await Question.findById(questionId)
     await Question.deleteOne({ _id: questionId });
     await Answer.deleteMany({ question: questionId });
     await Interaction.deleteMany({ question: questionId });
@@ -222,9 +246,11 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
       { $pull: { questions: questionId } }
     );
 
+    const minusPoints = (question.upvotes.length * 10) + 5
+    await User.findByIdAndUpdate(question.author, { $inc: { reputation: -minusPoints } })
     revalidatePath(path)
   } catch (error) {
-
+    console.log("🚀 ~ file: question.action.ts:253 ~ deleteQuestion ~ error:", error)
   }
 }
 

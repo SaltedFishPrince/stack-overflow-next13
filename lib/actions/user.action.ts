@@ -178,6 +178,7 @@ export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
 
     revalidatePath(path);
   } catch (error) {
+    console.log("🚀 ~ file: user.action.ts:181 ~ toggleSaveQuestion ~ error:", error)
 
   }
 }
